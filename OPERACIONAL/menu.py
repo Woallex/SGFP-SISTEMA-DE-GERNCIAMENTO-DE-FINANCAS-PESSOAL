@@ -4,6 +4,8 @@ import os
 
 import user
 
+import funcoesMD
+
 import pandas as pd
 
 def mostrar_menu_principal(user_id, conn):
@@ -12,11 +14,9 @@ def mostrar_menu_principal(user_id, conn):
 
         saldo = user.mostrar_saldo(conn, user_id)
 
-        print("\nMenu Principal:")
+        print("-----  MENU DE PRINCIPAL ----")
 
         print(f"\nSaldo atual R$: {saldo}")
-
-        print(f"\nDespesas")
 
         print("1. Adicionar Saldo")
 
@@ -44,7 +44,7 @@ def mostrar_menu_principal(user_id, conn):
 
         elif escolha == '2':
 
-            adicionar_despesa(user_id, conn)
+            despesa(user_id, conn)
 
         elif escolha == '3':
 
@@ -77,40 +77,31 @@ def adicionar_renda(user_id, conn):
 
 ##################################### DESPESAS ################################################
 
-def adicionar_despesa(user_id, conn):
+def despesa(user_id, conn):
 
     print("-----  MENU DE DESPESAS ----")
     print("1. Adcionar despesa") 
     print("2. Atualizar despesa")
-    print("2. Remover depesa")
-    print("3. Ver despesas")
-    print("4. Voltar ao menu de finanças")
+    print("3. Remover depesa")
+    print("4. Ver despesa")
+    print("5. Voltar ao menu de finanças")
 
     opcao = int(input("Opção desejada: "))
 
     if opcao == 1:
-        categoria = input("Qual a categoria do despesa: ")
-    
-        valor = float(input("Digite o valor do despesa: "))
-    
-        cursor = conn.cursor()
-    
-        cursor.execute('INSERT INTO gastos (user_id, categoria, valor) VALUES (?, ?, ?)', (user_id, categoria, valor))
-
-        conn.commit()
-    
-        print("Gasto adicionado com sucesso!")
-        #nova_despesa()
+        funcoesMD.adicionar_despesa(user_id, conn)
     elif opcao == 2:
-        atualiza_despesa()
+        atualizar_despesa()
     elif opcao == 3:
-        remove_despesa()
+        remover_despesa()
     elif opcao == 4:
-        lista_despesas()
+        funcoesMD.ver_despesa(user_id, conn)
     elif opcao == 5:
         menu_sistema()
     else:
         print("Opção inválida. Tente novamente.")
+
+
 
 #def nova_despesa():
 #    categoria = input("Categoria: ")

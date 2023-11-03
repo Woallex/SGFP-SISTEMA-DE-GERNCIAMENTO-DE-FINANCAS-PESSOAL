@@ -1,6 +1,7 @@
 from DATABASE import database
 import user
 import menu
+import funcoesMD
 import pandas as pd
 
 
@@ -48,4 +49,4 @@ while True:
 #3. APÓS ADICIONAR NOVA DISPESA DEVE APARECER UM CAMPO "ADD NOVA DESPESA S/N?". SE "SIM", MOSTRAR CATEGORIA E VALOR
 #                   SE "NÃO", DIRECIONAR PARA O MEU DE DESPESAS
 
-#4.
+#4.SEMPRE ENTRE UM ACESSO E OUTRO DEVE TER A OPÇÃO DE VOLTAR. 
