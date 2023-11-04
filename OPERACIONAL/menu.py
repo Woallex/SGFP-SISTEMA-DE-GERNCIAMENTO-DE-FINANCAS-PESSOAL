@@ -91,9 +91,9 @@ def despesa(user_id, conn):
     if opcao == 1:
         funcoesMD.adicionar_despesa(user_id, conn)
     elif opcao == 2:
-        atualizar_despesa()
+        funcoesMD.atualizar_despesa(user_id, conn)
     elif opcao == 3:
-        remover_despesa()
+        funcoesMD.remover_despesa(user_id, conn)
     elif opcao == 4:
         funcoesMD.ver_despesa(user_id, conn)
     elif opcao == 5:
