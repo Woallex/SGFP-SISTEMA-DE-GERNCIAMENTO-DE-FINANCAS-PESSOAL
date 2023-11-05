@@ -1,7 +1,8 @@
 from DATABASE import database
 import user
 import menu
-import funcoesMD
+import funcoesMD #MENU DESPESA
+import funcoesMP #MENU POUPANÇA
 import pandas as pd
 
 
@@ -24,7 +25,10 @@ while True:
         user_id = user.fazer_login(conn, cpf, senha)
         if user_id:
             print("Login realizado com sucesso!")
-            menu.mostrar_menu_principal(user_id[0], conn)
+            user_info = user.fazer_login(conn, cpf, senha)
+            if user_info:
+                user_id, nome = user_info
+                menu.mostrar_menu_principal(user_id, conn, nome)
         else:
             print("Credenciais inválidas. Tente novamente.")
     elif opcao == '2':

@@ -6,27 +6,35 @@ def criar_banco_de_dados():
 
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS usuarios (
-            id INTEGER PRIMARY KEY,
-            nome TEXT,
-            cpf TEXT,
-            senha TEXT
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            nome TEXT VARCHAR(45),
+            cpf TEXT VARCHAR(11),
+            senha TEXT VARCHAR(45)
         )
     ''')
 
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS renda (
-            id INTEGER PRIMARY KEY,
-            user_id INTEGER,
-            valor REAL
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER UNIQUE,
+            valor FLOAT
         )
     ''')
 
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS despesa (
-            id INTEGER PRIMARY KEY,
-            user_id INTEGER,
-            categoria TEXT,
-            valor REAL
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER UNIQUE,
+            categoria TEXT VARCHAR(45),
+            valor FLOAT
+        )
+    ''')
+
+    cursor.execute(''' 
+    CREATE TABLE IF NOT EXISTS poupanca (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER UNIQUE,
+        valorP FLOAT 
         )
     ''')
 
