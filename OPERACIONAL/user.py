@@ -2,9 +2,10 @@ import sqlite3
 
 def fazer_login(conn, cpf, senha):
     cursor = conn.cursor()
-    cursor.execute('SELECT id FROM usuarios WHERE cpf = ? AND senha = ?', (cpf, senha))
-    user_id = cursor.fetchone()
-    return user_id
+    cursor.execute('SELECT id, nome FROM usuarios WHERE cpf = ? AND senha = ?', (cpf, senha))
+    user_info = cursor.fetchone()
+    return user_info
+
 
 def fazer_cadastro(conn, nome, cpf, senha):
     cursor = conn.cursor()
@@ -24,3 +25,13 @@ def mostrar_saldo(conn, user_id):
     saldo = total_renda - total_gastos
 
     return saldo
+
+def mostrar_saldoPoupanca(conn, user_id):
+    cursor = conn.cursor()
+
+    cursor.execute('SELECT SUM(valorP) FROM poupanca WHERE user_id = ?', (user_id,))
+    total_valorP = cursor.fetchone()[0] or 0.0
+
+    saldoPoupanca = total_valorP
+
+    return saldoPoupanca

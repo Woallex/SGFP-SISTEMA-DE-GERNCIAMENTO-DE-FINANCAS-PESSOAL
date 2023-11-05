@@ -1,22 +1,26 @@
 from DATABASE import database
-
 import os
-
 import user
-
-import funcoesMD
+import funcoesMD #MENU DESPESA
+import funcoesMP #MENU POUPANÇA
 
 import pandas as pd
 
-def mostrar_menu_principal(user_id, conn):
+def mostrar_menu_principal(user_id, conn, nome_usuario):
 
     while True:        
 
         saldo = user.mostrar_saldo(conn, user_id)
+        saldoPoupanca = user.mostrar_saldoPoupanca(conn, user_id)
+
 
         print("-----  MENU DE PRINCIPAL ----")
 
-        print(f"\nSaldo atual R$: {saldo}")
+        print(f"\nSEJA BEM-VINDO, {nome_usuario}!\n")
+
+        print(f"\nSaldo atual em conta R$: {saldo}")
+
+        print(f" Poupança R$: {saldoPoupanca}")
 
         print("1. Adicionar Saldo")
 
@@ -89,15 +93,25 @@ def despesa(user_id, conn):
     opcao = int(input("Opção desejada: "))
 
     if opcao == 1:
+
         funcoesMD.adicionar_despesa(user_id, conn)
+
     elif opcao == 2:
+
         funcoesMD.atualizar_despesa(user_id, conn)
+
     elif opcao == 3:
+
         funcoesMD.remover_despesa(user_id, conn)
+
     elif opcao == 4:
+
         funcoesMD.ver_despesa(user_id, conn)
+
     elif opcao == 5:
+
         menu_sistema()
+
     else:
         print("Opção inválida. Tente novamente.")
 
@@ -109,9 +123,8 @@ def despesa(user_id, conn):
   #  descricao = input("Descricao da Despesa: ")
    # data = input("Digite a data: ")
 
-def lista_despesas():
-    print("em breve...")
 
+##################################### ESTATISTICA ################################################
     
 def estatistica(user_id, conn):
 
@@ -140,6 +153,7 @@ def estatistica(user_id, conn):
     else:
         print("Nenhum gasto registrado.")
 
+############################################### EXTRATO ############################
 
 def exibir_extrato_gastos(user_id, conn):
 
@@ -164,7 +178,8 @@ def exibir_extrato_gastos(user_id, conn):
 
 ############################################### POUPANÇA ############################
 
-def poupanca():
+def poupanca(user_id, conn):
+    
     print("-----  MENU POUPANÇAS ----")
     print("1. Adcionar poupança")
     print("2. Atualizar poupança")
@@ -175,15 +190,25 @@ def poupanca():
     opcao = int(input("Opção desejada: "))
 
     if opcao == 1:
-        nova_poupanca()
+
+        funcoesMP.adicinoar_poupanca(user_id, conn)
+
     elif opcao == 2:
+
         atualiza_poupanca()
+
     elif opcao == 3:
+
         remove_poupanca()
+
     elif opcao == 4:
+
         lista_poupanca()
+
     elif opcao == 5:
+
         menu_sistema()
+
     else:
         print("Opção inválida. Tente novamente.")
 
