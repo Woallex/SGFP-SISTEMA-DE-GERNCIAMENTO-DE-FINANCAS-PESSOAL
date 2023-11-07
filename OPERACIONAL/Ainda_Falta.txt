@@ -1,0 +1,19 @@
+Sobre o menu essas são as alterações necessarias.
+    regularizar a situação do extrato
+
+    Estatisticas que ainda não esta funcionando
+
+    poupança que não esta se conectando com o banco de dados
+
+    outros, ainda não esta definido
+
+    usuarios, temos que criar todas as funcionalidades 
+
+    ex: 
+    Editar usuario, onde teremos os dados e as possiveis alterações do usuario.
+
+
+Teremos outras funcionalidades e necessidades a serem completadas
+
+
+para entrar no venv baste inserir o seguinte codigo no terminal e dar um enter

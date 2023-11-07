@@ -35,3 +35,25 @@ def mostrar_saldoPoupanca(conn, user_id):
     saldoPoupanca = total_valorP
 
     return saldoPoupanca
+
+
+def exibir_extrato_gastos(user_id, conn):
+
+    cursor = conn.cursor()
+
+    cursor.execute('SELECT categoria, valor FROM despesa WHERE user_id = ?', (user_id,))
+
+    gastos = cursor.fetchall()
+    
+    if gastos:
+
+        print("\nExtrato de Gastos:")
+
+        for gasto in gastos:
+
+            categoria, valor = gasto
+
+            print(f"{categoria}: R$ {valor:.2f}")
+    else:
+
+        print("Nenhum gasto registrado.")
