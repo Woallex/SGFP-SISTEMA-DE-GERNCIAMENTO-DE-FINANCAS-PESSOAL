@@ -1,3 +1,35 @@
+import menu
+def despesa(user_id, conn):
+    while True:
+        print("-----  MENU DE DESPESAS ----")
+        print("1. Adcionar despesa") 
+        print("2. Atualizar despesa")
+        print("3. Remover depesa")
+        print("4. Ver despesa")
+        print("5. Voltar ao menu de finanças")
+
+        opcao = int(input("Opção desejada: "))
+
+        if opcao == 1:
+            adicionar_despesa(user_id, conn)
+
+        elif opcao == 2:
+            atualizar_despesa(user_id, conn)
+
+        elif opcao == 3:
+            remover_despesa(user_id, conn)
+
+        elif opcao == 4:
+            ver_despesa(user_id, conn)
+
+        elif opcao == 5:
+            break
+
+        else:
+            print("Opção inválida. Tente novamente.")
+
+
+
 def adicionar_despesa(user_id, conn):
     categoria = input("Qual a categoria do despesa: ")
         
@@ -10,8 +42,6 @@ def adicionar_despesa(user_id, conn):
     conn.commit()
         
     print("Gasto adicionado com sucesso!")
-
-
 
 
 def atualizar_despesa(user_id, conn):
