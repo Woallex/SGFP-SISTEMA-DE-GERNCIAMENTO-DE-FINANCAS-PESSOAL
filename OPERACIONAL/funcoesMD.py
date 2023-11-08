@@ -1,10 +1,11 @@
 import menu
-def despesa(user_id, conn):  
+def despesa(user_id, conn):
+    categorias_definidas(conn) 
     while True:
         print("-----  MENU DE DESPESAS ----")
-        print("1. Adcionar despesa") 
+        print("1. Adicionar despesa") 
         print("2. Atualizar despesa")
-        print("3. Remover depesa")
+        print("3. Remover despesa")
         print("4. Ver despesa")
         print("5. Voltar ao menu de finanças")
 
@@ -27,7 +28,6 @@ def despesa(user_id, conn):
 
         else:
             print("Opção inválida. Tente novamente.")
-            
 
 def adicionar_despesa(user_id, conn):
     cursor = conn.cursor()
@@ -89,8 +89,6 @@ def atualizar_despesa(user_id, conn):
     else:
         print("Nenhuma categoria pré-definida disponível. Você precisa criar categorias antes de atualizar uma despesa.")
 
-
-
 def remover_despesa(user_id, conn):
     cursor = conn.cursor()
 
@@ -114,7 +112,6 @@ def remover_despesa(user_id, conn):
     else:
         print("Nenhuma despesa registrada.")
 
-
 def ver_despesa(user_id, conn):
     cursor = conn.cursor()
 
@@ -127,7 +124,6 @@ def ver_despesa(user_id, conn):
             print(f"Categoria: {categoria}, Valor: R$ {valor:.2f}")
     else:
         print("Nenhuma despesa registrada.")
-        
 
 def categorias_definidas(conn):
     categorias = ['Alimentação', 'Transporte', 'Lazer', 'Moradia', 'Saúde', 'Educação', 'Outros']
