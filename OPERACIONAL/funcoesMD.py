@@ -1,13 +1,18 @@
 import menu
 def despesa(user_id, conn):
-    categorias_definidas(conn) 
+    cursor = conn.cursor()
+    cursor.execute('SELECT COUNT(*) FROM categorias')
+    count = cursor.fetchone()[0]
+
+    if count == 0:
+        categorias_definidas(conn)
+
     while True:
-        print("-----  MENU DE DESPESAS ----")
+        print("\n-----  MENU DE DESPESAS ----\n")
         print("1. Adicionar despesa") 
-        print("2. Atualizar despesa")
-        print("3. Remover despesa")
-        print("4. Ver despesa")
-        print("5. Voltar ao menu de finanças")
+        print("2. Remover despesa")
+        print("3. Ver despesa")
+        print("4. Voltar ao menu de finanças")
 
         opcao = int(input("Opção desejada: "))
 
@@ -15,15 +20,12 @@ def despesa(user_id, conn):
             adicionar_despesa(user_id, conn)
 
         elif opcao == 2:
-            atualizar_despesa(user_id, conn)
-
-        elif opcao == 3:
             remover_despesa(user_id, conn)
 
-        elif opcao == 4:
+        elif opcao == 3:
             ver_despesa(user_id, conn)
 
-        elif opcao == 5:
+        elif opcao == 4:
             break
 
         else:
@@ -31,22 +33,23 @@ def despesa(user_id, conn):
 
 def adicionar_despesa(user_id, conn):
     cursor = conn.cursor()
+    
     cursor.execute('SELECT id, nome FROM categorias')
     categorias = cursor.fetchall()
 
     if categorias:
-        print("Categorias pré-definidas:")
+        print("\n----Categorias pré-definidas:-----\n")
         for categoria_id, categoria_nome in categorias:
             print(f"{categoria_id}. {categoria_nome}")
 
-        categoria_escolhida = input("Escolha uma categoria pelo número (ou digite uma nova categoria): ")
+        categoria_escolhida = input("\nEscolha uma categoria pelo número (ou digite uma nova categoria): ")
         try:
             categoria_id = int(categoria_escolhida)
             if categoria_id in [cat[0] for cat in categorias]:
                 categoria = categorias[categoria_id - 1][1]
                 
             else:
-                nova_categoria = input("Digite a nova categoria: ")
+                nova_categoria = input("\nDigite a nova categoria: ")
                 cursor.execute('INSERT INTO categorias (nome) VALUES (?)', (nova_categoria,))
                 categoria = nova_categoria
                 
@@ -54,40 +57,13 @@ def adicionar_despesa(user_id, conn):
             cursor.execute('INSERT INTO categorias (nome) VALUES (?)', (categoria_escolhida,))
             categoria = categoria_escolhida
 
-        valor = float(input("Digite o valor da despesa:"))
+        valor = float(input("\nDigite o valor da despesa:"))
         cursor.execute('INSERT INTO despesa (user_id, categoria, valor) VALUES (?, ?, ?)', (user_id, categoria, valor))
         conn.commit()
         print("Gasto adicionado com sucesso!")
     else:
         print("Nenhuma categoria pré-definida disponível. Você precisa criar categorias antes de adicionar uma despesa.")
 
-def atualizar_despesa(user_id, conn):
-    cursor = conn.cursor()
-    cursor.execute('SELECT id, nome FROM categorias')
-    categorias = cursor.fetchall()
-
-    if categorias:
-        print("Categorias pré-definidas:")
-        for categoria_id, categoria_nome in categorias:
-            print(f"{categoria_id}. {categoria_nome}")
-
-        escolha_categoria = input("Escolha uma categoria pelo número (ou digite uma nova categoria): ")
-        try:
-            categoria_id = int(escolha_categoria)
-            if categoria_id in [cat[0] for cat in categorias]:
-                categoria = categorias[categoria_id - 1][1]
-                
-            else:
-                nova_categoria = input("Digite a nova categoria: ")
-                cursor.execute('INSERT INTO categorias (nome) VALUES (?)', (nova_categoria,))
-                categoria = nova_categoria
-                
-        except ValueError:
-            cursor.execute('INSERT INTO categorias (nome) VALUES (?)', (escolha_categoria,))
-            categoria = escolha_categoria
-
-    else:
-        print("Nenhuma categoria pré-definida disponível. Você precisa criar categorias antes de atualizar uma despesa.")
 
 def remover_despesa(user_id, conn):
     cursor = conn.cursor()
@@ -119,7 +95,7 @@ def ver_despesa(user_id, conn):
     despesa = cursor.fetchall()
 
     if despesa:
-        print("\n----- DESPESA ----")
+        print("\n----- DESPESA ----\n")
         for categoria, valor in despesa:
             print(f"Categoria: {categoria}, Valor: R$ {valor:.2f}")
     else:

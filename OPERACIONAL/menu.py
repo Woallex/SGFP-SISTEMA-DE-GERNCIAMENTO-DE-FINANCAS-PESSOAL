@@ -1,5 +1,5 @@
 from DATABASE import database
-import os
+
 import user
 import funcoesMD #MENU DESPESA
 import funcoesMP #MENU POUPANÇA
@@ -42,7 +42,6 @@ def mostrar_menu_principal(user_id, conn, nome_usuario):
         print("8. Sair")
 
         escolha = input("Escolha a opção: ")
-
         conn = database.conectar_banco_de_dados()
 
         if escolha == '1': 

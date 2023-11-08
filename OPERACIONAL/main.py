@@ -4,6 +4,7 @@ import menu
 import pandas as pd
 
 
+
 def main():
     database.criar_banco_de_dados()
 
@@ -26,6 +27,7 @@ def main():
                 user_id, nome = user_info
                 print("Login realizado com sucesso!")
                 menu.mostrar_menu_principal(user_id, conn, nome)
+
             else:
                 print("Credenciais inválidas. Tente novamente.")
         elif opcao == '2':
@@ -34,6 +36,7 @@ def main():
             senha = input("Digite sua senha: ")
             user.fazer_cadastro(conn, nome, cpf, senha)
             print("Cadastro realizado com sucesso.")
+
         elif opcao == '3':
             break
         else:

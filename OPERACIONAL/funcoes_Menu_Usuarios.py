@@ -1,5 +1,6 @@
 import sqlite3
 import main
+
 def configuracoes_usuario(user_id, conn):
     
     while True:
@@ -53,7 +54,7 @@ def configuracoes_usuario(user_id, conn):
         elif escolha == '4':
             senha = input("Digite a sua senha atual para confirmar a exclusão: ")
             conf_senha = input("Confirme sua senha: ")
-            if confirmar_senha == senha:
+            if conf_senha == senha:
                 if verificar_senha(conn, user_id, senha):
                     deletar_usuario(conn, user_id)
                     print("Usuário deletado com sucesso!")
@@ -114,5 +115,3 @@ def verificar_senha(conn, user_id, senha):
     except sqlite3.Error as e:
         print(f"Erro ao verificar a senha: {e}")
         return False
-
-

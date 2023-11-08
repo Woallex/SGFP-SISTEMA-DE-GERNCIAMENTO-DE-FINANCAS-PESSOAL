@@ -1,6 +1,6 @@
 def adicionar_renda(user_id, conn):
-
-    valor = float(input("Digite o valor da renda: "))    
+    print('\n------ Por favor informe o valor a ser adicionado!---------\n')
+    valor = float(input("\nDigite o valor da renda: "))    
 
     cursor = conn.cursor()
 
