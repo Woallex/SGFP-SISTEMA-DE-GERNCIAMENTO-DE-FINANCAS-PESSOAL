@@ -7,7 +7,6 @@ def criar_banco_de_dados():
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS usuarios (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            user_id INTEGER,
             nome TEXT,
             cpf TEXT,
             senha TEXT
@@ -31,13 +30,6 @@ def criar_banco_de_dados():
         )
     ''')
 
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS categorias (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            nome TEXT
-        )
-    ''')
-    
     cursor.execute(''' 
     CREATE TABLE IF NOT EXISTS poupanca (
         id INTEGER PRIMARY KEY AUTOINCREMENT,

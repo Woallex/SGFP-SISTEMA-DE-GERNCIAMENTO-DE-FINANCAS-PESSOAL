@@ -1,5 +1,5 @@
 import menu
-def despesa(user_id, conn):  
+def despesa(user_id, conn):
     while True:
         print("-----  MENU DE DESPESAS ----")
         print("1. Adcionar despesa") 
@@ -27,92 +27,95 @@ def despesa(user_id, conn):
 
         else:
             print("Opção inválida. Tente novamente.")
-            
+
+
 
 def adicionar_despesa(user_id, conn):
+    categoria = input("Qual a categoria do despesa: ")
+        
+    valor = float(input("Digite o valor do despesa: "))
+        
     cursor = conn.cursor()
-    cursor.execute('SELECT id, nome FROM categorias')
-    categorias = cursor.fetchall()
+        
+    cursor.execute('INSERT INTO despesa (user_id, categoria, valor) VALUES (?, ?, ?)', (user_id, categoria, valor))
 
-    if categorias:
-        print("Categorias pré-definidas:")
-        for categoria_id, categoria_nome in categorias:
-            print(f"{categoria_id}. {categoria_nome}")
+    conn.commit()
+        
+    print("Gasto adicionado com sucesso!")
 
-        categoria_escolhida = input("Escolha uma categoria pelo número (ou digite uma nova categoria): ")
-        try:
-            categoria_id = int(categoria_escolhida)
-            if categoria_id in [cat[0] for cat in categorias]:
-                categoria = categorias[categoria_id - 1][1]
-                
-            else:
-                nova_categoria = input("Digite a nova categoria: ")
-                cursor.execute('INSERT INTO categorias (nome) VALUES (?)', (nova_categoria,))
-                categoria = nova_categoria
-                
-        except ValueError:
-            cursor.execute('INSERT INTO categorias (nome) VALUES (?)', (categoria_escolhida,))
-            categoria = categoria_escolhida
-
-        valor = float(input("Digite o valor da despesa:"))
-        cursor.execute('INSERT INTO despesa (user_id, categoria, valor) VALUES (?, ?, ?)', (user_id, categoria, valor))
-        conn.commit()
-        print("Gasto adicionado com sucesso!")
-    else:
-        print("Nenhuma categoria pré-definida disponível. Você precisa criar categorias antes de adicionar uma despesa.")
 
 def atualizar_despesa(user_id, conn):
     cursor = conn.cursor()
-    cursor.execute('SELECT id, nome FROM categorias')
-    categorias = cursor.fetchall()
 
-    if categorias:
-        print("Categorias pré-definidas:")
-        for categoria_id, categoria_nome in categorias:
-            print(f"{categoria_id}. {categoria_nome}")
+    cursor.execute('SELECT categoria, valor FROM despesa WHERE user_id = ?', (user_id,))
+    despesas = cursor.fetchall()
 
-        escolha_categoria = input("Escolha uma categoria pelo número (ou digite uma nova categoria): ")
-        try:
-            categoria_id = int(escolha_categoria)
-            if categoria_id in [cat[0] for cat in categorias]:
-                categoria = categorias[categoria_id - 1][1]
-                
+    if despesas:
+        print("\n----- VOCÊ ESTÁ ALTERANDO DADOS DA DESPESA ----")
+        for index, despesa in enumerate(despesas, start=1):
+            categoria, valor = despesa #Desempacota a tupla 'despesa' em duas variáveis chamadas 'categoria' e 'valor'
+            print(f"{index}. Categoria: {categoria}, Valor: R$ {valor:.2f}")
+
+        escolha = int(input("\nDigite o número da despesa que deseja atualizar: "))
+
+        if 1 <= escolha <= len(despesas):
+            despesa_escolhida = despesas[escolha - 1] #indice inicail 0
+            categoria, valor = despesa_escolhida
+
+            nova_categoria = input(f"Nova categoria para '{categoria}' (ou pressione Enter para manter a mesma): ")
+            novo_valor = input(f"Novo valor para '{valor:.2f}' (ou pressione Enter para manter o mesmo): ")
+
+            
+            if nova_categoria or novo_valor:
+                sql = 'UPDATE despesa SET ' #Comando SQL para atualizar a despesa
+                parametros = [] #Valores que seram usados na consulta SQL
+            
+                if nova_categoria:
+                    sql += 'categoria = ?, '
+                    parametros.append(nova_categoria)
+
+                if novo_valor:
+                    sql += 'valor = ?, '
+                    parametros.append(float(novo_valor))
+
+                sql = sql.rstrip(', ') #Remove a ultima virgula da string do SQL
+                sql += ' WHERE categoria = ? AND valor = ? AND user_id = ?'
+                parametros.extend([categoria, valor, user_id])#Adiciona os dados a lista de parametros
+
+                cursor.execute(sql, parametros)
+                conn.commit() #Salva e altera o banco
+
+                print("Despesa atualizada com sucesso!")
             else:
-                nova_categoria = input("Digite a nova categoria: ")
-                cursor.execute('INSERT INTO categorias (nome) VALUES (?)', (nova_categoria,))
-                categoria = nova_categoria
-                
-        except ValueError:
-            cursor.execute('INSERT INTO categorias (nome) VALUES (?)', (escolha_categoria,))
-            categoria = escolha_categoria
-
-    else:
-        print("Nenhuma categoria pré-definida disponível. Você precisa criar categorias antes de atualizar uma despesa.")
+                print("Nenhuma mudança realizada.")
+        
 
 
 
 def remover_despesa(user_id, conn):
     cursor = conn.cursor()
 
-    cursor.execute('SELECT id, categoria, valor FROM despesa WHERE user_id = ?', (user_id,))
+    cursor.execute('SELECT categoria, valor FROM despesa WHERE user_id = ?', (user_id,))
     despesas = cursor.fetchall()
 
     if despesas:
         print("\n----- VOCÊ ESTÁ DELETANDO DADOS DA DESPESA ----")
-        for index, (despesa_id, categoria, valor) in enumerate(despesas, start=1):
-            print(f"{index}. ID: {despesa_id}, Categoria: {categoria}, Valor: R$ {valor:.2f}")
+        for index, despesa in enumerate(despesas, start=1):
+            categoria, valor = despesa
+            print(f"{index}. Categoria: {categoria}, Valor: R$ {valor:.2f}")
 
-        id_remover = int(input("\nDigite o ID da despesa que deseja remover: "))
+        categoria_remover = input("\nDigite a categoria da despesa que deseja remover: ")
 
-        if id_remover in [d[0] for d in despesas]:
-            cursor.execute('DELETE FROM despesa WHERE id = ? AND user_id = ?', (id_remover, user_id))
+        if categoria_remover in [d[0] for d in despesas]:
+            cursor.execute('DELETE FROM despesa WHERE categoria = ? AND user_id = ?', (categoria_remover, user_id))
             conn.commit()
 
-            print(f"Despesa com ID {id_remover} removida com sucesso!")
+            print(f"Despesa na categoria '{categoria_remover}' removida com sucesso!")
         else:
-            print("ID inválido. Tente novamente.")
+            print("Categoria inválida. Tente novamente.")
     else:
         print("Nenhuma despesa registrada.")
+
 
 
 def ver_despesa(user_id, conn):
@@ -127,11 +130,3 @@ def ver_despesa(user_id, conn):
             print(f"Categoria: {categoria}, Valor: R$ {valor:.2f}")
     else:
         print("Nenhuma despesa registrada.")
-        
-
-def categorias_definidas(conn):
-    categorias = ['Alimentação', 'Transporte', 'Lazer', 'Moradia', 'Saúde', 'Educação', 'Outros']
-    cursor = conn.cursor()
-    for categoria in categorias:
-        cursor.execute('INSERT INTO categorias (nome) VALUES (?)', (categoria,))
-    conn.commit()
