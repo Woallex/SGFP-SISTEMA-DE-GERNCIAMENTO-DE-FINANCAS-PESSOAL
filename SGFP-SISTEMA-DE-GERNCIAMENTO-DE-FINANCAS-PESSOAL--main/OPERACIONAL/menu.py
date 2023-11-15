@@ -1,8 +1,8 @@
 from DATABASE import database
 
 import user
-import funcoesMD #MENU DESPESA
-import funcoesMP #MENU POUPANÇA
+import funcoes_Menu_Despesa
+import funcoes_Menu_Poupanca
 import funcoes_Menu_Estatisticas
 import funcoes_Menu_Renda
 from funcoes_Menu_Usuarios import configuracoes_usuario
@@ -50,15 +50,23 @@ def mostrar_menu_principal(user_id, conn, nome_usuario):
 
         elif escolha == '2':
 
-            funcoesMD.despesa(user_id, conn)
+            funcoes_Menu_Despesa.despesa(user_id, conn)
 
         elif escolha == '3':
 
             user.exibir_extrato_gastos(user_id, conn)
 
         elif escolha == '4':
-            funcoes_Menu_Estatisticas.estatistica(user_id, conn)
+            mes = input("Digite o mês para visualizar as estatísticas (ou pressione Enter para mostrar todas): ")
+            ano = input("Digite o ano (ou pressione Enter para não considerar o ano): ")
+            funcoes_Menu_Estatisticas.estatistica(user_id, conn, mes, ano)
+        ######################################
+        #elif escolha == '5':
+         #   funcoes_Menu_Poupanca()
 
+        #elif escolha == '6':
+        ######################################
+        
         elif escolha == '7':
             configuracoes_usuario(user_id, conn)
         

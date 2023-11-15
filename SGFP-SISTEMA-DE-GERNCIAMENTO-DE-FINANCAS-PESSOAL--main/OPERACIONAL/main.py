@@ -9,7 +9,7 @@ def main():
     database.criar_banco_de_dados()
 
     while True:
-        print("  ☆ Olá, seja bem-vindo ao seu Sistema de Gerenciamento de Finanças Pessoal ☆")
+        print("  ☆ Olá, seja bem-vindo1 ao seu Sistema de Gerenciamento de Finanças Pessoal ☆")
         print("-----  MENU INICIAL ----")
         print("1. Login")
         print("2. Cadastro")
@@ -46,14 +46,4 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-#AJUSTES A SEREM RALIZADOS
-
-#1. AO ADICIONAR UMA DISPESA O SISTEMA DEVE MOSTRAR O CAMPO "MENU DE DISPESA"
-
-#2. APÓS MOSTRAR A ESTATISTICA DEVE APARECER A OPÇÃO "VOLTAR PARA O MEU PRINCIPLA"
-
-#3. APÓS ADICIONAR NOVA DISPESA DEVE APARECER UM CAMPO "ADD NOVA DESPESA S/N?". SE "SIM", MOSTRAR CATEGORIA E VALOR
-#                   SE "NÃO", DIRECIONAR PARA O MEU DE DESPESAS
-
-#4.SEMPRE ENTRE UM ACESSO E OUTRO DEVE TER A OPÇÃO DE VOLTAR. 
+    

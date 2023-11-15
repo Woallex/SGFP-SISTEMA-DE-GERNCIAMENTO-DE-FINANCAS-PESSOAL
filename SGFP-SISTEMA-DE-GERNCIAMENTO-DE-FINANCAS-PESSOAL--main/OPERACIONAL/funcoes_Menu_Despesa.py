@@ -1,6 +1,7 @@
 import menu
 import user
 import funcoes_Menu_Renda
+from datetime import datetime
 
 def despesa(user_id, conn):
     cursor = conn.cursor()
@@ -14,7 +15,7 @@ def despesa(user_id, conn):
         saldo = user.mostrar_saldo(conn, user_id)
 
         print("\n-----  MENU DE DESPESA ----\n")
-        print(f"\nSaldo atual em conta R$: {saldo}")
+        print(f"Saldo atual em conta R$: {saldo}")
         print("1. Adicionar despesa") 
         print("2. Remover despesa")
         print("3. Ver despesa")
@@ -41,6 +42,7 @@ def adicionar_despesa(user_id, conn):
     
     cursor.execute('SELECT id, nome FROM categorias')
     categorias = cursor.fetchall()
+
 
     if categorias:
         print("\n----Categorias pré-definidas:-----\n")
@@ -74,17 +76,26 @@ def adicionar_despesa(user_id, conn):
             return
 
         valor = float(valor)
+        data = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+        cursor.execute('INSERT INTO despesa (user_id, categoria, valor, data) VALUES (?, ?, ?, ?)', (user_id, categoria, valor, data))
+        conn.commit()
 
         if valor > saldo:
             novoSaldo = saldo - valor
             print(f"\nATENÇÃO: O valor da despesa ({valor:.2f}) é maior que o saldo disponível ({saldo:.2f}).")
             print(f"         SEU SALDO ATUAL É DE: {novoSaldo}")
             print("         PARA UM MELHOR CONTROLE DE SUAS FINANÇAS ACONSELHAMOS MANTER SEMPRE O SALDO POSITIVO.")
-        cursor.execute('INSERT INTO despesa (user_id, categoria, valor) VALUES (?, ?, ?)', (user_id, categoria, valor))  
-        conn.commit()
+
     else:
         print("Nenhuma categoria pré-definida disponível. Você precisa criar categorias antes de adicionar uma despesa.")
 
+def categorias_definidas(conn):
+    categorias = ['Alimentação', 'Transporte', 'Lazer', 'Moradia', 'Saúde', 'Educação', 'Outros']
+    cursor = conn.cursor()
+    for categoria in categorias:
+        cursor.execute('INSERT INTO categorias (nome) VALUES (?)', (categoria,))
+    conn.commit()
 
 
 def remover_despesa(user_id, conn):
@@ -115,21 +126,6 @@ def remover_despesa(user_id, conn):
             print("ID inválido. Tente novamente.")
     else:
         print("Nenhuma despesa registrada.")
-
-
-def ver_despesa(user_id, conn):
-    cursor = conn.cursor()
-
-    cursor.execute('SELECT categoria, valor FROM despesa WHERE user_id = ?', (user_id,))
-    despesa = cursor.fetchall()
-
-    if despesa:
-        print("\n----- DESPESA ----\n")
-        for categoria, valor in despesa:
-            print(f"Categoria: {categoria}, Valor: R$ {valor:.2f}")
-    else:
-        print("Nenhuma despesa registrada.")
-
 
 
 def categorias_definidas(conn):

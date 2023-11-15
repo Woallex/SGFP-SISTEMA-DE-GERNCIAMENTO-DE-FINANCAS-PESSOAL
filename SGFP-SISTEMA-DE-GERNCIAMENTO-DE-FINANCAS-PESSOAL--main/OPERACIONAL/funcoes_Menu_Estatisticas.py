@@ -4,6 +4,16 @@ def estatistica(user_id, conn):
 
     cursor = conn.cursor()
 
+    if mes and ano:
+        cursor.execute('SELECT categoria, valor, data FROM despesa WHERE user_id = ? AND strftime("%m-%Y", data) = ?', (user_id, f"{mes:02d}-{ano}"))
+    elif mes:
+        cursor.execute('SELECT categoria, valor, data FROM despesa WHERE user_id = ? AND strftime("%m", data) = ?', (user_id, mes))
+    else:
+        cursor.execute('SELECT categoria, valor, data FROM despesa WHERE user_id = ?', (user_id,))
+
+    dados = cursor.fetchall()
+
+
     cursor.execute('SELECT categoria, valor FROM despesa WHERE user_id = ?', (user_id,))
     dados = cursor.fetchall()
 
