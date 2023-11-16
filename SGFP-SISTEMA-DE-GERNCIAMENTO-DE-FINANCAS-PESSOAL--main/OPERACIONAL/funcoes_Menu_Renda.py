@@ -12,8 +12,9 @@ def adicionar_renda(user_id, conn):
 
     valor = float(valor_input)
     data = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    descricao = input("Descrição: ")
 
-    cursor.execute('INSERT INTO renda (user_id, valor, data) VALUES (?, ?, ?)', (user_id, valor, data))
+    cursor.execute('INSERT INTO renda (user_id, valor, data, descricao) VALUES (?, ?, ?, ?)', (user_id, valor, data, descricao))
     conn.commit()
 
     print("Renda adicionada com sucesso!")

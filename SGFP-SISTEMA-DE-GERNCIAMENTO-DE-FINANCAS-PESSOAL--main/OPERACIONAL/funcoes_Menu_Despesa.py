@@ -14,7 +14,7 @@ def despesa(user_id, conn):
     while True:
         saldo = user.mostrar_saldo(conn, user_id)
 
-        print("\n-----  MENU DE DESPESA ----\n")
+        print("\n-----  MENU DE DESPESA  ----\n")
         print(f"Saldo atual em conta R$: {saldo}")
         print("1. Adicionar despesa") 
         print("2. Remover despesa")
@@ -77,8 +77,9 @@ def adicionar_despesa(user_id, conn):
 
         valor = float(valor)
         data = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        descricao = input("Descrição: ")
 
-        cursor.execute('INSERT INTO despesa (user_id, categoria, valor, data) VALUES (?, ?, ?, ?)', (user_id, categoria, valor, data))
+        cursor.execute('INSERT INTO despesa (user_id, categoria, valor, data, descricao) VALUES (?, ?, ?, ?, ?)', (user_id, categoria, valor, data, descricao))
         conn.commit()
 
         if valor > saldo:
@@ -127,10 +128,14 @@ def remover_despesa(user_id, conn):
     else:
         print("Nenhuma despesa registrada.")
 
-
-def categorias_definidas(conn):
-    categorias = ['Alimentação', 'Transporte', 'Lazer', 'Moradia', 'Saúde', 'Educação', 'Outros']
+def ver_despesa(user_id, conn):
     cursor = conn.cursor()
-    for categoria in categorias:
-        cursor.execute('INSERT INTO categorias (nome) VALUES (?)', (categoria,))
-    conn.commit()
+
+    cursor.execute('SELECT categoria, valor, descricao, data FROM despesa WHERE user_id = ?', (user_id,))
+    despesa = cursor.fetchall()
+    if despesa:
+        print("\n----- DESPESA ----")
+        for categoria, valor, descricao, data in despesa:
+            print(f"Categoria: {categoria} \nValor: R$ {valor:.2f} \nDescrição: {descricao} \nData: {data} \n")
+    else:
+        print("Nenhuma despesa registrada.")
