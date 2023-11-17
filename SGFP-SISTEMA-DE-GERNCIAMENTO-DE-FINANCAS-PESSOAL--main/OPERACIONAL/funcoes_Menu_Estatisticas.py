@@ -1,31 +1,38 @@
 import pandas as pd
+import sqlite3
+from datetime import datetime
 
 def estatistica(user_id, conn):
 
     cursor = conn.cursor()
+    print("\n-----  MENU DE ESTATÍSTICAS  ----")
+    
+    # Solicitar ao usuário o mês e o ano desejados
+    mes = input("Digite o mês (2 digitos): ")
+    ano = input("Digite o ano (4 digitos): ")
+    
+    # Validar se as entradas de mês e ano são válidas
+    while not (mes.isdigit() and ano.isdigit() and 1 <= int(mes) <= 12):
+        print("Entrada inválida para mês ou ano. Por favor, tente novamente.")
+        mes = input("Digite o mês (2 digitos): ")
+        ano = input("Digite o ano (4 digitos): ")
 
-    if mes and ano:
-        cursor.execute('SELECT categoria, valor, data FROM despesa WHERE user_id = ? AND strftime("%m-%Y", data) = ?', (user_id, f"{mes:02d}-{ano}"))
-    elif mes:
-        cursor.execute('SELECT categoria, valor, data FROM despesa WHERE user_id = ? AND strftime("%m", data) = ?', (user_id, mes))
-    else:
-        cursor.execute('SELECT categoria, valor, data FROM despesa WHERE user_id = ?', (user_id,))
-
-    dados = cursor.fetchall()
-
-
-    cursor.execute('SELECT categoria, valor FROM despesa WHERE user_id = ?', (user_id,))
+    # Consultar as despesas do usuário para o mês e ano especificados
+    cursor.execute('SELECT categoria, valor FROM despesa WHERE user_id = ? AND strftime("%Y-%m", data) = ?', (user_id, f"{ano}-{mes}"))
     dados = cursor.fetchall()
 
     if dados:
 
-        dados = pd.DataFrame(dados, columns=['Categoria', 'Valor']) #Um DataFrame é uma estrutura de dados tabular semelhante a uma planilha.
+        print("-----  ESTATÍSTICAS  ----")
+        print(f"\nMês e Ano selecionados: {mes}/{ano}")
+
+        dados = pd.DataFrame(dados, columns=['Categoria', 'Valor'])
 
         largura = 50
 
         max_gasto = dados['Valor'].max()
 
-        for _, linha in dados.iterrows(): #dados.iterrows() é um método que percorre as linhas do DataFrame dados e retorna um iterador que produz pares (índice, linha).
+        for _, linha in dados.iterrows():
 
             categoria = linha['Categoria']
             gasto = linha['Valor']
@@ -33,6 +40,6 @@ def estatistica(user_id, conn):
             n_barras = int(gasto / max_gasto * largura)
 
             print(f'{categoria.ljust(15)} | {"#" * n_barras} ({gasto:.2f})')
-            # ljust(15) alinha a categoria à esquerda com uma largura de 15 caracteres. 
+
     else:
-        print("Nenhum gasto registrado.")
+        print("Nenhum gasto registrado para o mês/ano especificado.")

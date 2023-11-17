@@ -19,6 +19,7 @@ def criar_banco_de_dados():
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             user_id INTEGER,
             valor FLOAT,
+            descricao VARCHAR(200),
             data TEXT
         )
     ''')
@@ -29,6 +30,7 @@ def criar_banco_de_dados():
             user_id INTEGER,
             categoria TEXT VARCHAR(45),
             valor FLOAT,
+            descricao VARCHAR(200),
             data TEXT
         )
     ''')

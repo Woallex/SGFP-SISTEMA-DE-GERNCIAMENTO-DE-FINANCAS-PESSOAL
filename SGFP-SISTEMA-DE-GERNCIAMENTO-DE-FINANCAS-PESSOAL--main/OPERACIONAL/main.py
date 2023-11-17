@@ -2,6 +2,7 @@ from DATABASE import database
 import user
 import menu
 import pandas as pd
+from datetime import datetime
 
 
 
@@ -9,7 +10,7 @@ def main():
     database.criar_banco_de_dados()
 
     while True:
-        print("  ☆ Olá, seja bem-vindo1 ao seu Sistema de Gerenciamento de Finanças Pessoal ☆")
+        print("  $ Olá, seja bem-vindo ao seu Sistema de Gerenciamento de Finanças Pessoal $")
         print("-----  MENU INICIAL ----")
         print("1. Login")
         print("2. Cadastro")

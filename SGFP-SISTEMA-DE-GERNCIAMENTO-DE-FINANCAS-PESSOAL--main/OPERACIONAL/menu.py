@@ -17,7 +17,7 @@ def mostrar_menu_principal(user_id, conn, nome_usuario):
         saldoPoupanca = user.mostrar_saldoPoupanca(conn, user_id)
 
 
-        print("-----  MENU DE PRINCIPAL ----")
+        print("-----  MENU DE PRINCIPAL  ----")
 
         print(f"\nSEJA BEM-VINDO, {nome_usuario}!\n")
 
@@ -25,7 +25,7 @@ def mostrar_menu_principal(user_id, conn, nome_usuario):
 
         print(f" Poupança R$: {saldoPoupanca}")
 
-        print("1. Adicionar Saldo")
+        print("1. Adicionar renda")
 
         print("2. Despesa")
 
@@ -57,16 +57,14 @@ def mostrar_menu_principal(user_id, conn, nome_usuario):
             user.exibir_extrato_gastos(user_id, conn)
 
         elif escolha == '4':
-            mes = input("Digite o mês para visualizar as estatísticas (ou pressione Enter para mostrar todas): ")
-            ano = input("Digite o ano (ou pressione Enter para não considerar o ano): ")
-            funcoes_Menu_Estatisticas.estatistica(user_id, conn, mes, ano)
+            funcoes_Menu_Estatisticas.estatistica(user_id, conn)
         ######################################
         #elif escolha == '5':
          #   funcoes_Menu_Poupanca()
 
         #elif escolha == '6':
         ######################################
-        
+
         elif escolha == '7':
             configuracoes_usuario(user_id, conn)
         
