@@ -6,7 +6,7 @@ def adicionar_renda(user_id, conn):
 
     valor_input = input("\nDigite o valor da renda (ou pressione Enter para voltar ao menu): ")
 
-    if valor_input == '':
+    if valor_input == '' or str:
         print("Operação cancelada. Voltando ao menu principal...")
         return
 

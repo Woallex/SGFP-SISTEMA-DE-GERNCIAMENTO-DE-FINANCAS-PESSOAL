@@ -17,7 +17,7 @@ def mostrar_menu_principal(user_id, conn, nome_usuario):
         saldoPoupanca = user.mostrar_saldoPoupanca(conn, user_id)
 
 
-        print("-----  MENU DE PRINCIPAL  ----")
+        print("-----  MENU PRINCIPAL  ----")
 
         print(f"\nSEJA BEM-VINDO, {nome_usuario}!\n")
 
