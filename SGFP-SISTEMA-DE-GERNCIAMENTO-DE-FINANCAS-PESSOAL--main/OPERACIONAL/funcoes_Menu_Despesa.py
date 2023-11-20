@@ -19,7 +19,7 @@ def despesa(user_id, conn):
         print("1. Adicionar despesa") 
         print("2. Remover despesa")
         print("3. Ver despesa")
-        print("4. Voltar ao menu de finanças")
+        print("4. Voltar ao Menu Principal")
 
         opcao = input("Opção desejada (ou pressione Enter para mostrar o menu novamente): ")
 
@@ -71,10 +71,10 @@ def adicionar_despesa(user_id, conn):
 
         valor = input("\nDigite o valor da despesa (ou pressione Enter para voltar ao menu): ")
 
-        if valor == '':
-            print("Operação cancelada. Voltando ao menu  despesa...")
+        if valor == '' or str:
+            print("Operação cancelada. Voltando ao Menu Despesa...")
             return
-
+        
         valor = float(valor)
         data = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         descricao = input("Descrição: ")
@@ -112,8 +112,8 @@ def remover_despesa(user_id, conn):
 
         id_remover = input("\nDigite o ID da despesa que deseja remover (ou pressione Enter para voltar ao menu): ")
 
-        if id_remover == '':
-            print("Operação cancelada. Voltando ao menu despesa...")
+        if id_remover == '' or str:
+            print("Operação cancelada. Voltando ao Menu Despesa...")
             return  
 
         id_remover = int(id_remover)
