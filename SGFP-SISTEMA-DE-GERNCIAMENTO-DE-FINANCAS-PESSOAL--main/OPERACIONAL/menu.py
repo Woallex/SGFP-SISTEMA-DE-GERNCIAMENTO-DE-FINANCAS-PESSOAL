@@ -1,5 +1,4 @@
 from DATABASE import database
-
 import user
 import funcoes_Menu_Despesa
 import funcoes_Menu_Poupanca

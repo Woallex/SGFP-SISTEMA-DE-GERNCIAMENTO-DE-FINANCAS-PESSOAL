@@ -1,7 +1,6 @@
 from DATABASE import database
 import user
 import menu
-import getpass
 
 def mostrar_menu_inicial():
     print("  $ Olá, seja bem-vindo ao seu Sistema de Gerenciamento de Finanças Pessoal $")
@@ -23,10 +22,11 @@ def realizar_login(conn):
 
 def realizar_cadastro(conn):
     nome = input("Digite seu nome: ").title()
-    
-    cpf_valido = False
-    senha_valida = False
+    while len(nome) < 3:
+        print("Nome deve ter pelo menos 3 caracteres. Tente novamente.")
+        nome = input("Digite seu nome: ").title()
 
+    cpf_valido = False
     while not cpf_valido:
         cpf = input("Digite seu CPF: ")
         if not user.validar_cpf(cpf):
@@ -34,17 +34,9 @@ def realizar_cadastro(conn):
         else:
             cpf_valido = True
 
-    while not senha_valida:
-        senha = user.getpass("Digite sua senha: ")
-        senha_confirmacao = user.getpass("Confirme sua senha: ")
-
-        if senha != senha_confirmacao:
-            print("Senhas não coincidem. Tente novamente.")
-        else:
-            senha_valida = True
-
+    senha = user.obter_senha_valida()
     user.fazer_cadastro(conn, nome, cpf, senha)
-    print("Cadastro realizado com sucesso.")
+
 
 def main():
     try:
