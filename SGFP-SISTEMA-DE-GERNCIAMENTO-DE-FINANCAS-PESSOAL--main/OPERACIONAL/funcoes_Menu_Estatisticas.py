@@ -7,19 +7,16 @@ def estatistica(user_id, conn):
     cursor = conn.cursor()
     print("\n-----  MENU DE ESTATÍSTICAS  ----")
     
-    # Solicitar ao usuário o mês e o ano desejados
     mes = input("Digite o mês (2 digitos): ")
     ano = input("Digite o ano (4 digitos): ")
-    
-    # Validar se as entradas de mês e ano são válidas
     while not (mes.isdigit() and ano.isdigit() and 1 <= int(mes) <= 12):
         print("Entrada inválida para mês ou ano. Por favor, tente novamente.")
         mes = input("Digite o mês (2 digitos): ")
         ano = input("Digite o ano (4 digitos): ")
 
-    # Consultar as despesas do usuário para o mês e ano especificados
     cursor.execute('SELECT categoria, valor FROM despesa WHERE user_id = ? AND strftime("%Y-%m", data) = ?', (user_id, f"{ano}-{mes}"))
     dados = cursor.fetchall()
+    print(dados)
 
     if dados:
 
