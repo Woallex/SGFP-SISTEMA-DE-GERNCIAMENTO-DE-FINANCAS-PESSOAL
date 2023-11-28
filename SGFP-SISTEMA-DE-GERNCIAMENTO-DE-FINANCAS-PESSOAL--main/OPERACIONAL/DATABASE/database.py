@@ -20,7 +20,8 @@ def criar_banco_de_dados():
             user_id INTEGER,
             valor FLOAT,
             descricao VARCHAR(200),
-            data TEXT
+            data TEXT,
+            hora TEXT
         )
     ''')
 
@@ -31,7 +32,8 @@ def criar_banco_de_dados():
             categoria TEXT VARCHAR(45),
             valor FLOAT,
             descricao VARCHAR(200),
-            data TEXT
+            data TEXT,
+            hora TEXT
         )
     ''')
 

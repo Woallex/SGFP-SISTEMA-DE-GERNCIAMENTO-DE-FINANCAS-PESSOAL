@@ -4,17 +4,19 @@ def adicionar_renda(user_id, conn):
     cursor = conn.cursor()
     print('\n------ Por favor, informe o valor a ser adicionado!---------\n')
 
-    valor_input = input("\nDigite o valor da renda (ou pressione Enter para voltar ao menu): ")
+    valorR = input("Digite o valor da renda (ou pressione Enter para voltar ao Menu Principal): ")
 
-    if valor_input == '' or str:
-        print("Operação cancelada. Voltando ao menu principal...")
+    try:
+        valor = float(valorR)
+    except ValueError:
+        print("Operação cancelada. Voltando ao Menu Principal...")
         return
 
-    valor = float(valor_input)
-    data = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    descricao = input("Descrição: ")
+    data = datetime.now().strftime("%Y-%m-%d")
+    hora = datetime.now().strftime("%H:%M:%S")
+    descricao = input("Descrição: ").capitalize()
 
-    cursor.execute('INSERT INTO renda (user_id, valor, data, descricao) VALUES (?, ?, ?, ?)', (user_id, valor, data, descricao))
+    cursor.execute('INSERT INTO renda (user_id, valor, data, descricao, hora) VALUES (?, ?, ?, ?, ?)', (user_id, valor, data, descricao, hora))
     conn.commit()
 
     print("Renda adicionada com sucesso!")

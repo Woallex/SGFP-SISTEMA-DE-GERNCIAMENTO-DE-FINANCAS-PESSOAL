@@ -15,13 +15,12 @@ def despesa(user_id, conn):
         saldo = user.mostrar_saldo(conn, user_id)
 
         print("\n-----  MENU DE DESPESA  ----\n")
-        print(f"Saldo atual em conta R$: {saldo}")
-        print("1. Adicionar despesa") 
-        print("2. Remover despesa")
-        print("3. Ver despesa")
-        print("4. Voltar ao Menu Principal")
+        print(f"Saldo atual em conta R$: {saldo}\n")
+        print("1. Adicionar Despesa") 
+        print("2. Remover Despesa")
+        print("3. Ver Despesa")
 
-        opcao = input("Opção desejada (ou pressione Enter para mostrar o menu novamente): ")
+        opcao = input("\nOpção desejada (ou pressione Enter para voltar ao Menu Principal): ")
 
         if opcao == '1':
             adicionar_despesa(user_id, conn)
@@ -29,10 +28,8 @@ def despesa(user_id, conn):
             remover_despesa(user_id, conn)
         elif opcao == '3':
             ver_despesa(user_id, conn)
-        elif opcao == '4':
-            break
         elif opcao == '':
-            continue
+            return
         else:
             print("Opção inválida. Tente novamente.")
 
@@ -50,18 +47,17 @@ def adicionar_despesa(user_id, conn):
             print(f"{categoria_id}. {categoria_nome}")
 
         categoria_escolhida = input("\nEscolha uma categoria pelo número (ou digite uma nova categoria): ")
+        while categoria_escolhida == '':
+                    categoria_escolhida = input("\nEscolha uma categoria pelo número (ou digite uma nova categoria): ")
 
-        if categoria_escolhida == '':
-            print("Operação cancelada. Voltando ao menu despesa...")
-            return
 
         try:
             categoria_id = int(categoria_escolhida)
-            if categoria_id in [cat[0] for cat in categorias]:
-                categoria = categorias[categoria_id - 1][1]
+            if categoria_id in [cat[0] for cat in categorias]: # cria uma nova lista contendo apenas os IDs de categoria da lista original
+                categoria = categorias[categoria_id - 1][1] 
                 
             else:
-                nova_categoria = input("\nDigite a nova categoria: ")
+                nova_categoria = input("\nDigite a nova categoria: ").capitalize()
                 cursor.execute('INSERT INTO categorias (nome) VALUES (?)', (nova_categoria,))
                 categoria = nova_categoria
                 
@@ -69,19 +65,23 @@ def adicionar_despesa(user_id, conn):
             cursor.execute('INSERT INTO categorias (nome) VALUES (?)', (categoria_escolhida,))
             categoria = categoria_escolhida
 
-        valor = input("\nDigite o valor da despesa (ou pressione Enter para voltar ao menu): ")
-
-        if valor == '' or str:
-            print("Operação cancelada. Voltando ao Menu Despesa...")
-            return
+        valorD = input("\nDigite o valor da despesa (ou pressione Enter para voltar ao Menu de Despesa): ")
         
-        valor = float(valor)
-        data = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        descricao = input("Descrição: ")
+        try:
+            valor = float(valorD)
+        except ValueError:
+            print("Operação cancelada. Voltando ao Menu Principal...")
+            return
 
-        cursor.execute('INSERT INTO despesa (user_id, categoria, valor, data, descricao) VALUES (?, ?, ?, ?, ?)', (user_id, categoria, valor, data, descricao))
+        data = datetime.now().strftime("%Y-%m-%d")
+        hora = datetime.now().strftime("%H:%M:%S")
+
+        descricao = input("Descrição: ").capitalize()
+
+        cursor.execute('INSERT INTO despesa (user_id, categoria, valor, descricao, data,  hora) VALUES (?, ?, ?, ?, ?, ?)', (user_id, categoria, valor, descricao, data, hora))
         conn.commit()
 
+    
         if valor > saldo:
             novoSaldo = saldo - valor
             print(f"\nATENÇÃO: O valor da despesa ({valor:.2f}) é maior que o saldo disponível ({saldo:.2f}).")
@@ -103,22 +103,22 @@ def remover_despesa(user_id, conn):
     cursor = conn.cursor()
 
     cursor.execute('SELECT id, categoria, valor FROM despesa WHERE user_id = ?', (user_id,))
-    despesas = cursor.fetchall()
+    despesa = cursor.fetchall()
 
-    if despesas:
+    if despesa:
         print("\n----- VOCÊ ESTÁ DELETANDO DADOS DA DESPESA ----")
-        for index, (despesa_id, categoria, valor) in enumerate(despesas, start=1):
+        for index, (despesa_id, categoria, valor) in enumerate(despesa, start=1):
             print(f"{index}. ID: {despesa_id}, Categoria: {categoria}, Valor: R$ {valor:.2f}")
 
-        id_remover = input("\nDigite o ID da despesa que deseja remover (ou pressione Enter para voltar ao menu): ")
+        id_remover = input("\nDigite o ID da despesa que deseja remover (ou pressione Enter para voltar ao Menu de Despesa): ")
 
-        if id_remover == '' or str:
-            print("Operação cancelada. Voltando ao Menu Despesa...")
-            return  
+        try:
+            id_remover = int(id_remover)
+        except ValueError:
+            print("Operação cancelada. Voltando ao Menu de Despesa...")
+            return
 
-        id_remover = int(id_remover)
-
-        if id_remover in [d[0] for d in despesas]:
+        if id_remover in [d[0] for d in despesa]:
             cursor.execute('DELETE FROM despesa WHERE id = ? AND user_id = ?', (id_remover, user_id))
             conn.commit()
 
@@ -131,11 +131,12 @@ def remover_despesa(user_id, conn):
 def ver_despesa(user_id, conn):
     cursor = conn.cursor()
 
-    cursor.execute('SELECT categoria, valor, descricao, data FROM despesa WHERE user_id = ?', (user_id,))
+    cursor.execute('SELECT categoria, valor, descricao, data, hora FROM despesa WHERE user_id = ?', (user_id,))
     despesa = cursor.fetchall()
+    
     if despesa:
         print("\n----- DESPESA ----")
-        for categoria, valor, descricao, data in despesa:
-            print(f"Categoria: {categoria} \nValor: R$ {valor:.2f} \nDescrição: {descricao} \nData: {data} \n")
+        for categoria, valor, descricao, data, hora in despesa:
+            print(f"Categoria: {categoria} \nValor: R$ {valor:.2f} \nDescrição: {descricao} \nData: {data} \nHora: {hora} \n")
     else:
         print("Nenhuma despesa registrada.")

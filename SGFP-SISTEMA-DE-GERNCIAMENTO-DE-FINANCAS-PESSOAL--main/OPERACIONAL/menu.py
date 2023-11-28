@@ -25,7 +25,7 @@ def mostrar_menu_principal(user_id, conn, nome_usuario):
 
         print(f" Poupança R$: {saldoPoupanca}")
 
-        print("1. Adicionar renda")
+        print("1. Adicionar Renda")
 
         print("2. Despesa")
 
