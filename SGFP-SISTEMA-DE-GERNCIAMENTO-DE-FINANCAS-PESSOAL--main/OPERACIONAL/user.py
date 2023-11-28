@@ -20,16 +20,34 @@ def getpass(prompt="Password: "):
 
 def validar_cpf(cpf):
     cpf_validator = CPF()
-
-    if cpf_validator.validate(cpf):
-        return True
-    else:
-        return False
+    return cpf_validator.validate(cpf)
 
 def validar_senha(senha):
-    if len(senha) < 6:
-        return False
-    return True
+    return len(senha) >= 6
+
+
+def obter_cpf_valido():
+    while True:
+        cpf = input("Digite seu CPF: ")
+        if validar_cpf(cpf):
+            return cpf
+        else:
+            print("CPF inválido. Tente novamente.")
+
+def obter_senha_valida():
+    senha_valida = False
+    while not senha_valida:
+        senha = getpass("Digite sua senha: ")
+        senha_confirmacao = getpass("Confirme sua senha: ")
+
+        if senha != senha_confirmacao:
+            print("Senhas não coincidem. Tente novamente.")
+        elif not validar_senha(senha):
+            print("Senha deve ter pelo menos 6 caracteres. Tente novamente.")
+        else:
+            senha_valida = True
+
+    return senha
 
 
 def fazer_login(conn, cpf, senha):
@@ -47,13 +65,16 @@ def fazer_login(conn, cpf, senha):
         print("Credenciais inválidas. Tente novamente.")
         return None
 
-
 def fazer_cadastro(conn, nome, cpf, senha):
-    
     cursor = conn.cursor()
+    
+    cursor.execute('SELECT id FROM usuarios WHERE cpf = ?', (cpf,))
+    if cursor.fetchone():
+        print("CPF já cadastrado. Tente novamente.")
+        return
+
     cursor.execute('INSERT INTO usuarios (nome, cpf, senha) VALUES (?, ?, ?)', (nome, cpf, senha))
     conn.commit()
-
 
 def mostrar_saldo(conn, user_id):
     cursor = conn.cursor()
@@ -77,7 +98,6 @@ def mostrar_saldoPoupanca(conn, user_id):
     saldoPoupanca = total_valorP
 
     return saldoPoupanca
-
 
 def exibir_extrato_gastos(user_id, conn):
     cursor = conn.cursor()
