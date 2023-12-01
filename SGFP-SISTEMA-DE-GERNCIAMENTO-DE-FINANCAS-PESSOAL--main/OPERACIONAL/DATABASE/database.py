@@ -48,7 +48,10 @@ def criar_banco_de_dados():
     CREATE TABLE IF NOT EXISTS poupanca (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         user_id INTEGER,
-        valorP FLOAT 
+        valorP FLOAT,
+        objetivo VARCHAR(240),
+        contaAssociada VARCHAR(45) NOT NULL,
+        data DATE
         )
     ''')
 

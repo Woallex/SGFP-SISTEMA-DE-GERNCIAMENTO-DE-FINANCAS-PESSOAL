@@ -99,6 +99,15 @@ def mostrar_saldoPoupanca(conn, user_id):
 
     return saldoPoupanca
 
+def mostrar_total_despesas(conn, user_id):
+    cursor = conn.cursor()
+
+    cursor.execute('SELECT SUM(valor) FROM despesa WHERE user_id = ?', (user_id,))
+    total_em_despesas = cursor.fetchone()[0] or 0.0
+    saldoDespesas = total_em_despesas
+
+    return saldoDespesas
+
 def exibir_extrato_gastos(user_id, conn):
     cursor = conn.cursor()
 

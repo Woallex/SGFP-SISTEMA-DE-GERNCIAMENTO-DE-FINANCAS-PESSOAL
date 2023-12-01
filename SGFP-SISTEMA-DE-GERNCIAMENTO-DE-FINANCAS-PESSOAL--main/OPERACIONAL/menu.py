@@ -14,15 +14,17 @@ def mostrar_menu_principal(user_id, conn, nome_usuario):
 
         saldo = user.mostrar_saldo(conn, user_id)
         saldoPoupanca = user.mostrar_saldoPoupanca(conn, user_id)
+        saldoDespesas = user.mostrar_total_despesas(conn, user_id)
 
-
-        print("-----  MENU PRINCIPAL  ----")
+        print("---------------- MENU PRINCIPAL ----------------")
 
         print(f"\nSEJA BEM-VINDO, {nome_usuario}!\n")
 
-        print(f"Saldo atual em conta R$: {saldo}")
+        print(f"Saldo atual em conta: R${saldo:.2f}")
 
-        print(f" Poupança R$: {saldoPoupanca}")
+        print(f"Valor total em Poupança: R${saldoPoupanca:.2f}")
+
+        print(f"Valor atual em despesas: R${saldoDespesas:.2f}")
 
         print("1. Adicionar Renda")
 
@@ -33,8 +35,6 @@ def mostrar_menu_principal(user_id, conn, nome_usuario):
         print("4. Estatisticas")
 
         print("5. Poupança")
-
-        print("6. Outros")
 
         print("7. Configurações do Usuário")
 
@@ -57,12 +57,9 @@ def mostrar_menu_principal(user_id, conn, nome_usuario):
 
         elif escolha == '4':
             funcoes_Menu_Estatisticas.estatistica(user_id, conn)
-        ######################################
-        #elif escolha == '5':
-         #   funcoes_Menu_Poupanca()
-
-        #elif escolha == '6':
-        ######################################
+            
+        elif escolha == '5':
+            funcoes_Menu_Poupanca.poupanca(user_id, conn)
 
         elif escolha == '7':
             configuracoes_usuario(user_id, conn)
