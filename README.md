@@ -1,2 +1,2 @@
 # SGFP-SISTEMA-DE-GERNCIAMENTO-DE-FINANCAS-PESSOAL-
-Ainda vou colocar descrição
+O sistema consiste um gerenciamento de finanças. O intuido da criação foi para que os usuários tivessem um bom entendimento dos seu gastos, de modo que algumas funcionalidades deixam claras o uso de seu dinheiro. Ultilizamos médos para deixar o sistema atrativo e facil de usar, com muitas partes explicadas de modo a ajudar na sua ultilização. O funcionamente consiste em inserir um valor e então controlar seus gastos ultilizando as funcionalidades dos sistema.
