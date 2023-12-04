@@ -1,6 +1,6 @@
 import sqlite3
 import main
-
+import user 
 def configuracoes_usuario(user_id, conn):
     
     while True:
@@ -21,28 +21,37 @@ def configuracoes_usuario(user_id, conn):
         escolha = input("Escolha a opção: ")
 
         if escolha == '1':
-            senha = input("Digite a sua senha atual: ")
+            senha = user.getpass("Digite a sua senha atual: ")
             if verificar_senha(conn, user_id, senha):
                 novo_nome = input(f"Nome atual: {nome_atual}\nDigite o novo nome: ")
+                if novo_nome == "":
+                    print("Você esta inserindo um campo em branco. Por favor tente novamente.")
+                    configuracoes_usuario(user_id, conn)
                 atualizar_nome_usuario(conn, user_id, novo_nome)
                 print("Nome atualizado com sucesso!")
             else:
                 print("Senha incorreta. Tente novamente.")
 
         elif escolha == '2':
-            senha = input("Digite a sua senha atual: ")
+            senha = user.getpass("Digite a sua senha atual: ")
             if verificar_senha(conn, user_id, senha):
                 novo_cpf = input(f"CPF atual: {cpf_atual}\nDigite o novo CPF: ")
+                if novo_cpf == "":
+                    print("O CPF não pode ser um campo em branco. Tente novamente.")
+                    configuracoes_usuario(user_id, conn)
                 atualizar_cpf_usuario(conn, user_id, novo_cpf)
                 print("CPF atualizado com sucesso!")
             else:
                 print("Senha incorreta. Tente novamente.")
 
         elif escolha == '3':
-            senha = input("Digite a sua senha atual: ")
+            senha = user.getpass("Digite a sua senha atual: ")
             if verificar_senha(conn, user_id, senha):
                 nova_senha = input("Digite a nova senha: ")
-                confirmar_senha = input("Confirme a nova senha: ")
+                if nova_senha == "":
+                    print("Você esta inserindo um campo em branco. Por favor tente novamente.")
+                    configuracoes_usuario(user_id, conn)
+                confirmar_senha = user.getpass("Confirme a nova senha: ")
                 if nova_senha == confirmar_senha:
                     atualizar_senha_usuario(conn, user_id, nova_senha)
                     print("Senha atualizada com sucesso!")
@@ -52,8 +61,11 @@ def configuracoes_usuario(user_id, conn):
                 print("Senha incorreta. Tente novamente.")
 
         elif escolha == '4':
-            senha = input("Digite a sua senha atual para confirmar a exclusão: ")
-            conf_senha = input("Confirme sua senha: ")
+            senha = user.getpass("Digite a sua senha atual para confirmar a exclusão: ")
+            if senha =="":
+                print("Você esta inserindo um espaço em branco. Por favor tente novamente.")
+                configuracoes_usuario(user_id, conn)
+            conf_senha = user.getpass("Confirme sua senha: ")
             if conf_senha == senha:
                 if verificar_senha(conn, user_id, senha):
                     deletar_usuario(conn, user_id)

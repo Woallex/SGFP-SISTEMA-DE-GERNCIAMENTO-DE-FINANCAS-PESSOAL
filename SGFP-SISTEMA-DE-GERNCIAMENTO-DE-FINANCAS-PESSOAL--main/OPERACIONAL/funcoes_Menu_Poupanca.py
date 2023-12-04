@@ -47,7 +47,7 @@ def adicionar_poupanca(user_id, conn):
         print("-------------------- ADCIONAR POUPANÇA --------------------")
 
         valorP = float(input("Digite o Saldo da poupança: R$"))
-        if valorP <= 0: #o valor não pode ser nulo
+        if valorP <= 0:
                 raise ValueError("O valor da poupança deve ser maior que zero e não pode ser em branco.")
     
         objetivo = input("Digite a descrição/objetivo da poupança: ").capitalize()
@@ -89,14 +89,14 @@ def atualiza_poupanca(user_id, conn):
 
         id = int(input("Digite o ID da poupança a ser atualizada: "))
 
-        # Verifica se o ID existe no banco de dados
+
         cursor = conn.cursor()
         cursor.execute("SELECT id FROM poupanca WHERE id = ?", (id,))
         resultado = cursor.fetchone()
         if resultado:
-            # Se O ID existe, então permita a atualização
+
             valorP = float(input("Digite o Saldo da poupança: R$"))
-            if valorP <= 0: #o valor não pode ser nulo
+            if valorP <= 0: 
                 raise ValueError("O valor da poupança deve ser maior que zero e não pode ser em branco.")
             
             objetivo = input("Digite a descrição/objetivo da poupança: ").capitalize()
