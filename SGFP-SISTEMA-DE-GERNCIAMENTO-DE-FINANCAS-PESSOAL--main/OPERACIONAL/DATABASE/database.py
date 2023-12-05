@@ -1,9 +1,7 @@
 import sqlite3
-
 def criar_banco_de_dados():
     conn = sqlite3.connect('financas.db')
     cursor = conn.cursor()
-
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS usuarios (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -13,17 +11,16 @@ def criar_banco_de_dados():
             senha TEXT
         )
     ''')
-
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS renda (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             user_id INTEGER,
             valor FLOAT,
             descricao VARCHAR(200),
-            data TEXT
+            data TEXT,
+            hora TEXT
         )
     ''')
-
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS despesa (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -31,10 +28,10 @@ def criar_banco_de_dados():
             categoria TEXT VARCHAR(45),
             valor FLOAT,
             descricao VARCHAR(200),
-            data TEXT
+            data TEXT,
+            hora TEXT
         )
     ''')
-
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS categorias (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -47,15 +44,16 @@ def criar_banco_de_dados():
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         user_id INTEGER,
         valorP FLOAT 
+        valorP FLOAT,
+        objetivo VARCHAR(240),
+        contaAssociada VARCHAR(45) NOT NULL,
+        data DATE
         )
     ''')
 
-
     conn.commit()
     conn.close()
-
 def conectar_banco_de_dados():
     return sqlite3.connect('financas.db')
-
 def desconectar_banco_de_dados(conn):
     conn.close()
