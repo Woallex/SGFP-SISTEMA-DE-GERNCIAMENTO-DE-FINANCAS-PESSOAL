@@ -36,9 +36,9 @@ def mostrar_menu_principal(user_id, conn, nome_usuario):
 
         print("5. Poupança")
 
-        print("7. Configurações do Usuário")
+        print("6. Configurações do Usuário")
 
-        print("8. Sair")
+        print("7. Sair")
 
         escolha = input("Escolha a opção: ")
         conn = database.conectar_banco_de_dados()
@@ -61,10 +61,10 @@ def mostrar_menu_principal(user_id, conn, nome_usuario):
         elif escolha == '5':
             funcoes_Menu_Poupanca.poupanca(user_id, conn)
 
-        elif escolha == '7':
+        elif escolha == '6':
             configuracoes_usuario(user_id, conn)
         
-        elif escolha == '8':
+        elif escolha == '7':
 
             database.desconectar_banco_de_dados(conn)
 
