@@ -1,7 +1,12 @@
+import time
+import os
 import menu
 import user
 import funcoes_Menu_Renda
 from datetime import datetime
+
+def limpar_tela():
+    os.system('cls' if os.name == 'nt' else 'clear')
 
 def despesa(user_id, conn):
     cursor = conn.cursor()
@@ -32,6 +37,8 @@ def despesa(user_id, conn):
             return
         else:
             print("Opção inválida. Tente novamente.")
+            time.sleep(2)
+            limpar_tela()
 
 def adicionar_despesa(user_id, conn):
     saldo = user.mostrar_saldo(conn, user_id)
@@ -71,12 +78,15 @@ def adicionar_despesa(user_id, conn):
             valor = float(valorD)
         except ValueError:
             print("Operação cancelada. Voltando ao Menu Principal...")
+            time.sleep(2)
+            limpar_tela()
             return
 
         data = datetime.now().strftime("%Y-%m-%d")
         hora = datetime.now().strftime("%H:%M:%S")
 
         descricao = input("Descrição: ").capitalize()
+        limpar_tela()
 
         cursor.execute('INSERT INTO despesa (user_id, categoria, valor, descricao, data,  hora) VALUES (?, ?, ?, ?, ?, ?)', (user_id, categoria, valor, descricao, data, hora))
         conn.commit()
@@ -87,9 +97,12 @@ def adicionar_despesa(user_id, conn):
             print(f"\nATENÇÃO: O valor da despesa ({valor:.2f}) é maior que o saldo disponível ({saldo:.2f}).")
             print(f"         SEU SALDO ATUAL É DE: {novoSaldo}")
             print("         PARA UM MELHOR CONTROLE DE SUAS FINANÇAS ACONSELHAMOS MANTER SEMPRE O SALDO POSITIVO.")
+            time.sleep(2)
 
     else:
         print("Nenhuma categoria pré-definida disponível. Você precisa criar categorias antes de adicionar uma despesa.")
+        time.sleep(2)
+        limpar_tela()
 
 def categorias_definidas(conn):
     categorias = ['Alimentação', 'Transporte', 'Lazer', 'Moradia', 'Saúde', 'Educação', 'Outros']
@@ -116,6 +129,8 @@ def remover_despesa(user_id, conn):
             id_remover = int(id_remover)
         except ValueError:
             print("Operação cancelada. Voltando ao Menu de Despesa...")
+            time.sleep(2)
+            limpar_tela()
             return
 
         if id_remover in [d[0] for d in despesa]:
@@ -123,10 +138,16 @@ def remover_despesa(user_id, conn):
             conn.commit()
 
             print(f"Despesa com ID {id_remover} removida com sucesso!")
+            time.sleep(2)
+            limpar_tela()
         else:
             print("ID inválido. Tente novamente.")
+            time.sleep(2)
+            limpar_tela()
     else:
         print("Nenhuma despesa registrada.")
+        time.sleep(2)
+        limpar_tela()
 
 def ver_despesa(user_id, conn):
     cursor = conn.cursor()
@@ -138,5 +159,8 @@ def ver_despesa(user_id, conn):
         print("\n----- DESPESA ----")
         for categoria, valor, descricao, data, hora in despesa:
             print(f"Categoria: {categoria} \nValor: R$ {valor:.2f} \nDescrição: {descricao} \nData: {data} \nHora: {hora} \n")
+            time.sleep(2)
     else:
         print("Nenhuma despesa registrada.")
+        time.sleep(2)
+        limpar_tela()
