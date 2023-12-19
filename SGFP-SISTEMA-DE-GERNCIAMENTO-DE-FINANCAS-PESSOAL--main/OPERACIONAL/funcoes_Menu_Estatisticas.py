@@ -21,7 +21,7 @@ def estatistica(user_id, conn):
 
     cursor.execute('SELECT categoria, valor FROM despesa WHERE user_id = ? AND strftime("%Y-%m", data) = ?', (user_id, f"{ano}-{mes}"))
     dados = cursor.fetchall()
-    print(dados)
+
 
     if dados:
 
