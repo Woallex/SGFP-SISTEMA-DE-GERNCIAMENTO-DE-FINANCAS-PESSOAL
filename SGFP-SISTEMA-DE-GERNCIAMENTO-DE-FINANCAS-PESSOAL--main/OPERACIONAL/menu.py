@@ -1,4 +1,6 @@
 from DATABASE import database
+import os
+import time
 import user
 import funcoes_Menu_Despesa
 import funcoes_Menu_Poupanca
@@ -7,6 +9,9 @@ import funcoes_Menu_Renda
 from funcoes_Menu_Usuarios import configuracoes_usuario
 
 import pandas as pd
+
+def limpar_tela():
+    os.system('cls' if os.name == 'nt' else 'clear')
 
 def mostrar_menu_principal(user_id, conn, nome_usuario):
 
@@ -46,14 +51,17 @@ def mostrar_menu_principal(user_id, conn, nome_usuario):
         if escolha == '1': 
 
             funcoes_Menu_Renda.adicionar_renda(user_id, conn)
+            
 
         elif escolha == '2':
 
             funcoes_Menu_Despesa.despesa(user_id, conn)
+            limpar_tela()
 
         elif escolha == '3':
 
             user.exibir_extrato_gastos(user_id, conn)
+            
 
         elif escolha == '4':
             funcoes_Menu_Estatisticas.estatistica(user_id, conn)
@@ -71,8 +79,12 @@ def mostrar_menu_principal(user_id, conn, nome_usuario):
             break 
         elif escolha == '':
             print("Opção invalida. Tente novamente.")
+            time.sleep(1)
+            limpar_tela()
             continue
         else:
 
             print("Opção inválida. Tente novamente.")
+            time.sleep(1)
+            limpar_tela()
         
