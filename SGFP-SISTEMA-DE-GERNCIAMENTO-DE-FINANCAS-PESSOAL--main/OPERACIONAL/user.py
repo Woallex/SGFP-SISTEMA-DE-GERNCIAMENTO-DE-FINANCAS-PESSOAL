@@ -1,5 +1,10 @@
 from validate_docbr import CPF
 import msvcrt
+import os
+import time
+
+def limpar_tela():
+    os.system('cls' if os.name == 'nt' else 'clear')
 
 def getpass(prompt="Password: "):
     print(prompt, end="", flush=True)
@@ -33,6 +38,8 @@ def obter_cpf_valido():
             return cpf
         else:
             print("CPF inválido. Tente novamente.")
+            time.sleep(1)
+            limpar_tela()
 
 def obter_senha_valida():
     senha_valida = False
@@ -42,8 +49,12 @@ def obter_senha_valida():
 
         if senha != senha_confirmacao:
             print("Senhas não coincidem. Tente novamente.")
+            time.sleep(1)
+            limpar_tela()
         elif not validar_senha(senha):
             print("Senha deve ter pelo menos 6 caracteres. Tente novamente.")
+            time.sleep(1)
+            limpar_tela()
         else:
             senha_valida = True
 
@@ -63,7 +74,10 @@ def fazer_login(conn, cpf, senha):
         return user_info
     else:
         print("Credenciais inválidas. Tente novamente.")
+        time.sleep(1)
+        limpar_tela()
         return None
+    limpar_tela()
 
 def fazer_cadastro(conn, nome, cpf, senha):
     cursor = conn.cursor()
@@ -71,10 +85,13 @@ def fazer_cadastro(conn, nome, cpf, senha):
     cursor.execute('SELECT id FROM usuarios WHERE cpf = ?', (cpf,))
     if cursor.fetchone():
         print("CPF já cadastrado. Tente novamente.")
+        time.sleep(1)
+        limpar_tela()
         return
 
     cursor.execute('INSERT INTO usuarios (nome, cpf, senha) VALUES (?, ?, ?)', (nome, cpf, senha))
     conn.commit()
+limpar_tela()
 
 def mostrar_saldo(conn, user_id):
     cursor = conn.cursor()
@@ -119,6 +136,10 @@ def exibir_extrato_gastos(user_id, conn):
         print("\nExtrato de Gastos:")
         for gasto in gastos:
             categoria, valor, data, hora = gasto
-            print(f"{categoria}: R$ {valor:.2f} em {data} às {hora}")
+            print(f"{data:<12}      {hora:<8}      {categoria:<15}     {valor:>10.2f}")
+            time.sleep(1)
+            
     else:
         print("Nenhum gasto registrado.")
+        time.sleep(1)
+        limpar_tela()
