@@ -1,6 +1,11 @@
 from DATABASE import database
 import user
 import menu
+import os
+import time
+
+def limpar_tela():
+    os.system('cls' if os.name == 'nt' else 'clear')
 
 def mostrar_menu_inicial():
     print("  $ Olá, seja bem-vindo ao seu Sistema de Gerenciamento de Finanças Pessoal $")
@@ -17,13 +22,18 @@ def realizar_login(conn):
         user_id, nome = user_info
         print("Login realizado com sucesso!")
         menu.mostrar_menu_principal(user_id, conn, nome)
+        time.sleep(1)
+        limpar_tela()
     else:
         print("Credenciais inválidas. Tente novamente.")
+        time.sleep(1)
+        limpar_tela()
 
 def realizar_cadastro(conn):
     nome = input("Digite seu nome: ").title()
     while len(nome) < 3:
-        print("Nome deve ter pelo menos 3 caracteres. Tente novamente.")
+        print("Nome deve ter pelo menos 3 caracteres. Tente novamente!")
+        time.sleep(1)
         nome = input("Digite seu nome: ").title()
 
     cpf_valido = False
@@ -31,12 +41,14 @@ def realizar_cadastro(conn):
         cpf = input("Digite seu CPF: ")
         if not user.validar_cpf(cpf):
             print("CPF inválido. Tente novamente.")
+            time.sleep(1)
+
         else:
             cpf_valido = True
 
     senha = user.obter_senha_valida()
     user.fazer_cadastro(conn, nome, cpf, senha)
-
+    limpar_tela()
 
 def main():
     try:
@@ -56,6 +68,8 @@ def main():
                 break
             else:
                 print("Opção inválida. Tente novamente.")
+                time.sleep(1)
+                limpar_tela()
 
             database.desconectar_banco_de_dados(conn)
 
