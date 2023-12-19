@@ -1,6 +1,11 @@
 import time
 import menu
 import user
+import os
+
+def limpar_tela():
+    os.system('cls' if os.name == 'nt' else 'clear')
+
 def poupanca(user_id, conn):
     try:
         print("\n")
@@ -37,9 +42,13 @@ def poupanca(user_id, conn):
 
         else:
             print("Opção inválida. Tente novamente.")
+            time.sleep(2)
+            limpar_tela()
 
     except:
         print("Desculpe, ocorreu um erro inesperado")
+        time.sleep(1)
+        limpar_tela()
 
 def adicionar_poupanca(user_id, conn):
     try:
@@ -49,6 +58,7 @@ def adicionar_poupanca(user_id, conn):
         valorP = float(input("Digite o Saldo da poupança: R$"))
         if valorP <= 0:
                 raise ValueError("O valor da poupança deve ser maior que zero e não pode ser em branco.")
+                
     
         objetivo = input("Digite a descrição/objetivo da poupança: ").capitalize()
         if objetivo == "":
@@ -57,6 +67,7 @@ def adicionar_poupanca(user_id, conn):
         contaAssociada = input("Conta bancaria que esta armazenada a poupança: ").capitalize()
         while contaAssociada == "":
             print("Este é um campo obrigatório, por favor preencha o campo.")
+            time.sleep(2)
             contaAssociada = input("Conta bancaria que esta armazenada a poupança: ").capitalize()
 
         data = input("Digite a data de abertura da poupança: ") 
@@ -72,11 +83,14 @@ def adicionar_poupanca(user_id, conn):
             cursor.execute('INSERT INTO poupanca (user_id, valorP, objetivo, contaAssociada, data) VALUES (?, ?, ?, ?, ?)', (user_id, valorP, objetivo,contaAssociada, data))
             conn.commit()
             print("Poupança adicionada com sucesso!")
-            print("Voltando ao Menu Poupança...")
+            print("Voltando ao Menu Poupança.")
             time.sleep(2)
+            limpar_tela()
             poupanca(user_id, conn)
         else:
-            print("Voltando ao Menu Poupança...")
+            print("Voltando ao Menu Poupança.")
+            time.sleep(2)
+            limpar_tela()
             poupanca(user_id, conn)
 
     except ValueError as ve:
@@ -121,15 +135,22 @@ def atualiza_poupanca(user_id, conn):
                 conn.commit()
                 print("Poupança atualizada com sucesso com sucesso!")
                 time.sleep(2)
+                limpar_tela()
                 poupanca(user_id, conn)
             else:
-                print("Voltando ao Menu Poupança...")
+                print("Voltando ao Menu Poupança.")
+                time.sleep(2)
+                limpar_tela()
                 poupanca(user_id, conn)
         else:
             print("Nenhuma poupança relacionada ao ID que você informou.")
+            time.len.sleep(2)
+            limpar_tela()
             poupanca(user_id, conn)
     except:
         print("Ocorreu um erro durante a atualização da poupança, por favor tente novamente")
+        time.len.sleep(2)
+        limpar_tela()
 
 def remove_poupanca(user_id, conn):
     try: 
@@ -149,13 +170,19 @@ def remove_poupanca(user_id, conn):
             print("Poupança removida com sucesso!")
             print("Voltando ao Menu Poupança...")
             time.sleep(2)
+            limpar_tela()
             poupanca(user_id, conn)
         else:
             print("ID da Poupança não encontrado. A despesa não pode ser Removida.")
             print("Voltando ao Menu Poupança...")
+            time.sleep(2)
+            limpar_tela()
             poupanca(user_id, conn)
     except:
         print("Ocorreu um erro durante a atualização da poupança, por favor tente novamente")
+        time.sleep(2)
+        limpar_tela()
+
 def lista_poupanca(user_id, conn, return_to_menu = True):
     try:
         print("\n")
@@ -174,4 +201,6 @@ def lista_poupanca(user_id, conn, return_to_menu = True):
             poupanca(user_id, conn)
     except:
         print("Ocorreu um erro durante a atualização da poupança, por favor tente novamente")
+        time.sleep(2)
+        limpar_tela()
 
